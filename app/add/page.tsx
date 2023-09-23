@@ -1,8 +1,8 @@
-import { SpotifyPlayer } from '../components/';
+import { SearchSong } from '@/components/SearchSong';
 export default function Home() {
     return (
         <main className="flex flex-grow flex-col items-center justify-between p-24">
-            <SpotifyPlayer url="59WN2psjkt1tyaxjspN8fp" />
+            <SearchSong />
         </main>
     );
 }
