@@ -26,7 +26,6 @@ export default function SearchResultItem({ data }: SearchResultItemProps) {
     const smallImage = data.album.images.find(
         (i) => i.height === 64
     ) as SearchResultItemSchema['album']['images'][0];
-    console.log(smallImage);
 
     return (
         <div className="flex gap-2 items-center">

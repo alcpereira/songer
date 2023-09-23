@@ -75,7 +75,7 @@
 //     uri: 'spotify:track:2rBHnIxbhkMGLpqmsNX91M'
 // };
 
-import SearchResultItem from './SearchResultItem';
+import SearchResultItem from '@/components/search/SearchResultItem';
 
 type SearchResultSchema = {
     album: {

@@ -6,7 +6,7 @@
 ## Todo MVP
 
 -   [x] Search song
--   [ ] Login
+-   [x] Login
 -   [ ] Suggest song
 -   [ ] Suggest song options
 -   [ ] Like / Dislike

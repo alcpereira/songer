@@ -1,7 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth';
+
 import getSpotifyToken from './getSpotifyToken';
 
 export async function POST(request: NextRequest) {
+    const session = await getServerSession();
+    if (!session) return new NextResponse('Unauthorized', { status: 401 });
+
     const token = await getSpotifyToken();
 
     const { search } = await request.json();

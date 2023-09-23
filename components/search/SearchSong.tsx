@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import SearchResult from './SearchResult';
+import SearchResult from '@/components/search/SearchResult';
 
 export function SearchSong() {
     const [results, setResults] = useState([]);
