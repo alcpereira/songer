@@ -1,6 +1,7 @@
 import { getServerSession } from 'next-auth';
 
 import { SpotifyPlayer } from '@/components/player/SpotifyPlayer';
+
 export default async function Home() {
     const session = await getServerSession();
     return (
