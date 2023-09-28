@@ -11,7 +11,6 @@
         "db:generate": "drizzle-kit generate:pg"
     },
     "dependencies": {
-        "@hookform/resolvers": "^3.3.1",
         "@radix-ui/react-dialog": "^1.0.4",
         "@radix-ui/react-label": "^2.0.2",
         "@radix-ui/react-slot": "^1.0.2",
@@ -33,11 +32,10 @@
         "prettier": "^3.0.3",
         "react": "18.2.0",
         "react-dom": "18.2.0",
-        "react-hook-form": "^7.46.2",
         "tailwind-merge": "^1.14.0",
         "tailwindcss": "3.3.3",
         "tailwindcss-animate": "^1.0.7",
-        "zod": "3.21.4"
+        "use-debounce": "^9.0.4"
     },
     "devDependencies": {
         "@next/env": "^13.5.2",

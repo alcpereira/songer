@@ -1,31 +1,18 @@
+'use client';
+
 import Image from 'next/image';
 
-import { Button } from '@/components/ui/button';
-
-type SearchResultItemSchema = {
-    album: {
-        name: string;
-        images: {
-            height: number;
-            url: string;
-            width: number;
-        }[];
-    };
-    artists: {
-        name: string;
-    }[];
-    name: string;
-    id: string;
-};
+import { AddButton } from '@/components/search';
+import type { ImageObject, SearchResult } from '@/types/searchResult';
 
 type SearchResultItemProps = {
-    data: SearchResultItemSchema;
+    data: SearchResult;
 };
 
-export default function SearchResultItem({ data }: SearchResultItemProps) {
-    const smallImage = data.album.images.find(
-        (i) => i.height === 64
-    ) as SearchResultItemSchema['album']['images'][0];
+export function SearchResultItem({ data }: SearchResultItemProps) {
+    const smallImage = data.album.images.find((i) => i.height === 64) as ImageObject;
+
+    const mediumImage = data.album.images.find((i) => i.height === 300) as ImageObject;
 
     return (
         <div className="flex gap-2 items-center">
@@ -45,9 +32,12 @@ export default function SearchResultItem({ data }: SearchResultItemProps) {
                     {data.artists.map((i) => i.name).join(', ')}
                 </p>
             </div>
-            <div>
-                <Button variant={'secondary'}>Add</Button>
-            </div>
+            <AddButton
+                name={data.name}
+                artists={data.artists}
+                imageURL={mediumImage.url}
+                id={data.id}
+            />
         </div>
     );
 }

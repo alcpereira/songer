@@ -8,6 +8,6 @@
 -   [x] Search song
 -   [x] Login
 -   [ ] Suggest song
--   [ ] Suggest song options
+-   [x] Suggest song options
 -   [ ] Like / Dislike
 -   [ ] Super Like / Super Dislike

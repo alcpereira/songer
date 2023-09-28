@@ -20,7 +20,7 @@ type AddButtonProps = {
     id: SearchResult['id'];
 };
 
-export default function AddButton({ name, artists, imageURL }: AddButtonProps) {
+export function AddButton({ name, artists, imageURL }: AddButtonProps) {
     return (
         <Dialog>
             <DialogTrigger asChild>
