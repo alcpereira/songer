@@ -2,7 +2,7 @@ import { fetchSpotifySong } from '@/lib/fetchSpotify';
 import { SearchResultItem } from '@/components/search/SearchResultItem';
 
 type SearchResultProps = {
-    query: string | null;
+    query: string | undefined;
 };
 
 export function SearchResultPlaceHolder() {
@@ -24,8 +24,9 @@ export function SearchResultPlaceHolder() {
 
 export async function SearchResult({ query }: SearchResultProps) {
     if (!query) return null;
-
     const data = await fetchSpotifySong(query);
+
+    if (!data || !data.tracks || !data.tracks.items) return null;
 
     const results = await data.tracks.items;
 

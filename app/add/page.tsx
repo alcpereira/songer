@@ -12,11 +12,11 @@ export default async function AddPage({ searchParams }: { searchParams: { search
         redirect('/api/auth/signin');
     }
 
-    const searchQuery = searchParams.search || '';
+    const searchQuery = searchParams.search || undefined;
 
     return (
         <main className="flex flex-grow flex-col items-center justify-between p-24" key={uuidv4()}>
-            <SearchBar />
+            <SearchBar search={searchQuery || ''} />
             <Suspense fallback={<SearchResultPlaceHolder />}>
                 <SearchResult query={searchQuery} />
             </Suspense>

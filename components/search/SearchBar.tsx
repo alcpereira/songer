@@ -1,27 +1,30 @@
 'use client';
 
-import { useDebounce } from 'use-debounce';
 import { Input } from '../ui/input';
-import { useEffect, useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import { Button } from '../ui/button';
+import { useState } from 'react';
 
-export function SearchBar() {
-    const params = useSearchParams();
+export function SearchBar({ search }: { search?: string }) {
     const router = useRouter();
-    const [value, setValue] = useState(params.get('search') || '');
-    const [debouncedValue] = useDebounce(value, 500);
 
-    const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setValue(e.target.value);
+    const [searchQuery, setSearchQuery] = useState(search || '');
+
+    const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        router.push(`/add?search=${searchQuery}`);
     };
 
-    useEffect(() => {
-        if (!debouncedValue) {
-            router.push('/add');
-        } else {
-            router.push(`/add?${new URLSearchParams({ search: debouncedValue }).toString()}`);
-        }
-    }, [router, debouncedValue]);
-
-    return <Input value={value} onChange={handleOnChange} placeholder="Search" />;
+    return (
+        <form className="flex gap-2 w-full" onSubmit={onSubmit}>
+            <Input
+                className="flex-grow"
+                value={searchQuery}
+                placeholder="Search song on Spotify"
+                id="search"
+                onChange={(e) => setSearchQuery(e.currentTarget.value)}
+            />
+            <Button variant="secondary">Search</Button>
+        </form>
+    );
 }
