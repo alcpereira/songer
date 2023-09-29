@@ -1,4 +1,8 @@
+'use client';
+
 import Image from 'next/image';
+import { useTransition, useState } from 'react';
+import { useSession } from 'next-auth/react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -12,6 +16,8 @@ import {
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { type SearchResult } from '@/types/searchResult';
+import { addSong } from '@/app/actions';
+import type { SongInsert } from '@/db/schema';
 
 type AddButtonProps = {
     name: SearchResult['name'];
@@ -20,9 +26,29 @@ type AddButtonProps = {
     id: SearchResult['id'];
 };
 
-export function AddButton({ name, artists, imageURL }: AddButtonProps) {
+export function AddButton({ name, artists, imageURL, id }: AddButtonProps) {
+    const session = useSession();
+
+    const [isPending, startTransition] = useTransition();
+
+    const [acoustic, setAcoustic] = useState(false);
+    const [tuning, setTuning] = useState(false);
+    const [feminine, setFemine] = useState(false);
+    const [dialogOpen, setDialogOpen] = useState(false);
+
+    const payload: SongInsert = {
+        spotifyId: id,
+        spotifyImage: imageURL,
+        accountName: session.data?.user?.name,
+        name: name,
+        artist: artists.map((i) => i.name).join(', '),
+        acoustic: acoustic,
+        tuning: tuning,
+        feminine: feminine
+    };
+
     return (
-        <Dialog>
+        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger asChild>
                 <Button variant="secondary">Add</Button>
             </DialogTrigger>
@@ -45,21 +71,33 @@ export function AddButton({ name, artists, imageURL }: AddButtonProps) {
                             </div>
                             <div className="flex flex-col gap-4 justify-center">
                                 <div className="flex items-center space-x-2 ">
-                                    <Switch id="acoustic" />
+                                    <Switch
+                                        id="acoustic"
+                                        checked={acoustic}
+                                        onCheckedChange={() => setAcoustic(!acoustic)}
+                                    />
                                     <Label htmlFor="acoustic" className="flex gap-2 py-2">
                                         <span>Acoustic compatible?</span>
                                         <span>🎻</span>
                                     </Label>
                                 </div>
                                 <div className="flex items-center space-x-2 ">
-                                    <Switch id="drop-tuning" />
+                                    <Switch
+                                        id="drop-tuning"
+                                        checked={tuning}
+                                        onCheckedChange={() => setTuning(!tuning)}
+                                    />
                                     <Label htmlFor="drop-tuning" className="flex gap-2 py-2">
                                         <span>Needs drop tuning?</span>
                                         <span>🤘</span>
                                     </Label>
                                 </div>
                                 <div className="flex items-center space-x-2 ">
-                                    <Switch id="feminine" />
+                                    <Switch
+                                        id="feminine"
+                                        checked={feminine}
+                                        onCheckedChange={() => setFemine(!feminine)}
+                                    />
                                     <Label htmlFor="feminine" className="flex gap-2 py-2">
                                         <span>Female compatible voice?</span>
                                         <span>🎤</span>
@@ -69,7 +107,20 @@ export function AddButton({ name, artists, imageURL }: AddButtonProps) {
                         </div>
                     </div>
                 </div>
-                <Button>Save song</Button>
+                <Button
+                    onClick={() =>
+                        startTransition(async () => {
+                            const response = await addSong(payload);
+                            if (response.error) {
+                                console.log(response.error);
+                            }
+                            setDialogOpen(false);
+                        })
+                    }
+                    disabled={isPending}
+                >
+                    {isPending ? 'Saving...' : 'Save song'}
+                </Button>
             </DialogContent>
         </Dialog>
     );

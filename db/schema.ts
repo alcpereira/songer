@@ -1,9 +1,9 @@
-import { relations } from 'drizzle-orm';
+import { relations, InferInsertModel } from 'drizzle-orm';
 import { boolean, integer, pgTable, serial, varchar } from 'drizzle-orm/pg-core';
 
 export const songs = pgTable('songs', {
     id: serial('id').primaryKey(),
-    spotifyId: varchar('spotify_id', { length: 256 }),
+    spotifyId: varchar('spotify_id', { length: 256 }).unique(),
     spotifyImage: varchar('spotify_image', { length: 256 }),
     accountName: varchar('account_name', { length: 256 }),
     name: varchar('name', { length: 256 }),
@@ -12,6 +12,8 @@ export const songs = pgTable('songs', {
     tuning: boolean('tuning').default(false),
     feminine: boolean('feminine').default(false)
 });
+
+export type SongInsert = InferInsertModel<typeof songs>;
 
 export const songsRelations = relations(songs, ({ many }) => ({
     likes: many(likes)
