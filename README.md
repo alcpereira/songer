@@ -6,6 +6,7 @@
 ## Todo MVP
 
 -   [x] Search song
+-   [x] Add loading state to search
 -   [x] Login
 -   [ ] Suggest song
 -   [x] Suggest song options

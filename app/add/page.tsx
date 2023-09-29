@@ -1,8 +1,9 @@
 import { redirect } from 'next/navigation';
 import { getServerSession } from 'next-auth';
 import { Suspense } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
-import { SearchResult, SearchBar } from '@/components/search';
+import { SearchResult, SearchBar, SearchResultPlaceHolder } from '@/components/search';
 
 export default async function AddPage({ searchParams }: { searchParams: { search?: string } }) {
     const session = await getServerSession();
@@ -14,9 +15,9 @@ export default async function AddPage({ searchParams }: { searchParams: { search
     const searchQuery = searchParams.search || '';
 
     return (
-        <main className="flex flex-grow flex-col items-center justify-between p-24">
+        <main className="flex flex-grow flex-col items-center justify-between p-24" key={uuidv4()}>
             <SearchBar />
-            <Suspense fallback={<div className="text-2xl">Loading...</div>}>
+            <Suspense fallback={<SearchResultPlaceHolder />}>
                 <SearchResult query={searchQuery} />
             </Suspense>
         </main>
