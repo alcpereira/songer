@@ -37,7 +37,7 @@ export default async function Home() {
         );
 
     return (
-        <main className="flex w-full flex-grow flex-col items-center justify-between p-24">
+        <main className="flex w-full max-w-[1000px] flex-grow flex-col items-center justify-between p-24">
             <div className="flex w-full flex-col items-center gap-4">
                 <h1 className="text-4xl font-bold">Welcome to Songer, {session?.user?.name}</h1>
                 <p className="text-xl">Find good songs</p>

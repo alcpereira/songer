@@ -20,7 +20,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     const session = await getServerSession();
     return (
         <html lang="en" className="dark">
-            <body className={cn(inter.className, 'min-h-screen flex flex-col')}>
+            <body
+                className={cn(
+                    inter.className,
+                    'min-h-screen flex flex-col justify-center items-center'
+                )}
+            >
                 <SessionProvider session={session}>
                     <Navbar />
                     {children}
