@@ -11,5 +11,7 @@
 -   [x] Suggest song
 -   [x] Suggest song options
 -   [x] Like / Dislike / Super Like / Super Dislike
+-   [x] Styling Like button
+-   [ ] Overall styling
 -   [ ] Dashboard
--   [ ] Styling Like button
+-   [ ] Add preview player to search song

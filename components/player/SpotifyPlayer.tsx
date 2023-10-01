@@ -62,8 +62,9 @@ export function SpotifyPlayer({ songs }: SpotifyPlayerProps) {
             {isFinished && <div>No more songs</div>}
             {!isFinished && (
                 <>
-                    <div className="flex gap-4 w-full py-2">
+                    <div className="flex gap-4 w-full py-4 justify-center items-center">
                         <button
+                            className="h-11 rounded-md w-1/5 bg-green-600"
                             onClick={() =>
                                 startTransition(async () => {
                                     await likeSong(
@@ -78,6 +79,7 @@ export function SpotifyPlayer({ songs }: SpotifyPlayerProps) {
                             Super Like
                         </button>
                         <button
+                            className="h-11 rounded-md w-1/5 bg-green-500"
                             onClick={() =>
                                 startTransition(async () => {
                                     await likeSong(
@@ -92,6 +94,7 @@ export function SpotifyPlayer({ songs }: SpotifyPlayerProps) {
                             Like
                         </button>
                         <button
+                            className="h-11 rounded-md w-1/5 bg-red-500"
                             onClick={() =>
                                 startTransition(async () => {
                                     await likeSong(
@@ -106,6 +109,7 @@ export function SpotifyPlayer({ songs }: SpotifyPlayerProps) {
                             Dislike
                         </button>
                         <button
+                            className="h-11 rounded-md w-1/5 bg-red-700"
                             onClick={() =>
                                 startTransition(async () => {
                                     await likeSong(
