@@ -31,6 +31,7 @@ export function AddButton({ name, artists, imageURL, id }: AddButtonProps) {
 
     const [isPending, startTransition] = useTransition();
 
+    const [isAdded, setIsAdded] = useState(false);
     const [acoustic, setAcoustic] = useState(false);
     const [tuning, setTuning] = useState(false);
     const [feminine, setFemine] = useState(false);
@@ -50,7 +51,9 @@ export function AddButton({ name, artists, imageURL, id }: AddButtonProps) {
     return (
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger asChild>
-                <Button variant="secondary">Add</Button>
+                <Button variant="secondary" disabled={isAdded}>
+                    {!isAdded ? 'Add' : 'Added!'}
+                </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-2xl">
                 <DialogHeader>
@@ -115,6 +118,7 @@ export function AddButton({ name, artists, imageURL, id }: AddButtonProps) {
                                 console.log(response.error);
                             }
                             setDialogOpen(false);
+                            setIsAdded(true);
                         })
                     }
                     disabled={isPending}
