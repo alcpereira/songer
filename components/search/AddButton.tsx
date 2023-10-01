@@ -39,7 +39,7 @@ export function AddButton({ name, artists, imageURL, id }: AddButtonProps) {
     const payload: SongInsert = {
         spotifyId: id,
         spotifyImage: imageURL,
-        accountName: session.data?.user?.name,
+        accountName: session.data?.user?.name as string,
         name: name,
         artist: artists.map((i) => i.name).join(', '),
         acoustic: acoustic,
