@@ -26,7 +26,11 @@ export default async function DashboardPage() {
         .leftJoin(likes, eq(likes.songId, songs.id))
         .groupBy(songs.id);
 
-    songsResult.sort((a, b) => b.superLikes * 2 + b.likes - a.superLikes * 2 - a.likes);
+    songsResult.sort((a, b) => {
+        const bTotal = Number(b.superLikes) * 2 + Number(b.likes);
+        const aTotal = Number(a.superLikes) * 2 + Number(a.likes);
+        return bTotal - aTotal;
+    });
 
     return (
         <main className="flex flex-grow max-w-[1000px] w-full flex-col items-start justify-between p-24 gap-4">
