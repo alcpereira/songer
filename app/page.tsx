@@ -26,7 +26,7 @@ export default async function Home() {
         .where(isNull(likes));
     songsWithoutLikes.sort(() => Math.random() - 0.5);
 
-    if (!songsWithoutLikes)
+    if (!songsWithoutLikes || songsWithoutLikes.length === 0)
         return (
             <main className="flex flex-grow flex-col items-center justify-between p-24">
                 <div className="flex flex-col items-center gap-4">

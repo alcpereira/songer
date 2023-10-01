@@ -1,6 +1,6 @@
 'use server';
 
-import { SongInsert, songs } from '@/db/schema';
+import { SongInsert, songs, likes } from '@/db/schema';
 import { db } from '@/lib/drizzle';
 
 export async function addSong(payload: SongInsert) {
@@ -22,5 +22,22 @@ export async function likeSong(
     accountName: string,
     payload: 'liked' | 'superLiked' | 'disliked' | 'superDisliked'
 ) {
-    console.log(songId, accountName, payload);
+    try {
+        const addedLike = await db
+            .insert(likes)
+            .values({
+                accoutName: accountName,
+                songId: songId,
+                disliked: payload === 'disliked',
+                superDisliked: payload === 'superDisliked',
+                liked: payload === 'liked',
+                superLiked: payload === 'superLiked'
+            })
+            .returning();
+        console.log('Like added', addedLike);
+        return { success: addedLike };
+    } catch (err) {
+        console.log(err);
+        return { error: 'Unknown error, please check logs' };
+    }
 }

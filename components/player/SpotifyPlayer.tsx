@@ -60,22 +60,68 @@ export function SpotifyPlayer({ songs }: SpotifyPlayerProps) {
         <>
             <div key={'embed-iframe'} id={'embed-iframe'}></div>
             {isFinished && <div>No more songs</div>}
-            <div className="flex gap-4 w-full py-2">
-                <button
-                    onClick={() =>
-                        startTransition(async () => {
-                            await likeSong(
-                                songs[currentSong].id,
-                                session.data?.user?.name as string,
-                                'liked'
-                            );
-                            loadNextSong();
-                        })
-                    }
-                >
-                    Like
-                </button>
-            </div>
+            {!isFinished && (
+                <>
+                    <div className="flex gap-4 w-full py-2">
+                        <button
+                            onClick={() =>
+                                startTransition(async () => {
+                                    await likeSong(
+                                        songs[currentSong].id,
+                                        session.data?.user?.name as string,
+                                        'superLiked'
+                                    );
+                                    loadNextSong();
+                                })
+                            }
+                        >
+                            Super Like
+                        </button>
+                        <button
+                            onClick={() =>
+                                startTransition(async () => {
+                                    await likeSong(
+                                        songs[currentSong].id,
+                                        session.data?.user?.name as string,
+                                        'liked'
+                                    );
+                                    loadNextSong();
+                                })
+                            }
+                        >
+                            Like
+                        </button>
+                        <button
+                            onClick={() =>
+                                startTransition(async () => {
+                                    await likeSong(
+                                        songs[currentSong].id,
+                                        session.data?.user?.name as string,
+                                        'disliked'
+                                    );
+                                    loadNextSong();
+                                })
+                            }
+                        >
+                            Dislike
+                        </button>
+                        <button
+                            onClick={() =>
+                                startTransition(async () => {
+                                    await likeSong(
+                                        songs[currentSong].id,
+                                        session.data?.user?.name as string,
+                                        'superDisliked'
+                                    );
+                                    loadNextSong();
+                                })
+                            }
+                        >
+                            Super Dislike
+                        </button>
+                    </div>
+                </>
+            )}
         </>
     );
 }

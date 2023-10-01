@@ -8,7 +8,8 @@
 -   [x] Search song
 -   [x] Add loading state to search
 -   [x] Login
--   [ ] Suggest song
+-   [x] Suggest song
 -   [x] Suggest song options
--   [ ] Like / Dislike
--   [ ] Super Like / Super Dislike
+-   [x] Like / Dislike / Super Like / Super Dislike
+-   [ ] Dashboard
+-   [ ] Styling Like button
