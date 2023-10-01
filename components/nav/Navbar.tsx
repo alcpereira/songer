@@ -13,9 +13,9 @@ export default function Navbar() {
 -24"
         >
             <div>
-                <Link href="/" className="text-2xl font-bold">
+                <a className="text-2xl font-bold" href="/">
                     Songer
-                </Link>
+                </a>
             </div>
             <div className="flex items-center gap-8">
                 {session && (

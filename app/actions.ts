@@ -16,3 +16,11 @@ export async function addSong(payload: SongInsert) {
         }
     }
 }
+
+export async function likeSong(
+    songId: number,
+    accountName: string,
+    payload: 'liked' | 'superLiked' | 'disliked' | 'superDisliked'
+) {
+    console.log(songId, accountName, payload);
+}
