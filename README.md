@@ -1,7 +1,10 @@
 ## Tech stack
 
 -   Next.js 13 (React + TypeScript)
+    -   with React Server Components and Server Actions
 -   shadcn/ui
+-   Drizzle ORM + @vercel/postgre
+-   Spotify Embed API
 
 ## Todo MVP
 
@@ -12,6 +15,10 @@
 -   [x] Suggest song options
 -   [x] Like / Dislike / Super Like / Super Dislike
 -   [x] Styling Like button
--   [ ] Overall styling
--   [ ] Dashboard
+-   [x] Overall styling
+-   [x] Dashboard
+
+## Nice to have
+
 -   [ ] Add preview player to search song
+-   [ ] Potential bug fixes
