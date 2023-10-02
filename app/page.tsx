@@ -2,7 +2,7 @@ import { getServerSession } from 'next-auth';
 
 import { SpotifyPlayer, SpotifyWrapper } from '@/components/player';
 import { db } from '@/lib/drizzle';
-import { eq, isNull } from 'drizzle-orm';
+import { eq, not } from 'drizzle-orm';
 import { songs, likes } from '@/db/schema';
 
 export default async function Home() {
@@ -23,7 +23,8 @@ export default async function Home() {
         .select({ id: songs.id, uri: songs.spotifyId })
         .from(songs)
         .leftJoin(likes, eq(likes.songId, songs.id))
-        .where(isNull(likes));
+        .where(not(eq(likes.accoutName, session?.user?.name as string)));
+
     songsWithoutLikes.sort(() => Math.random() - 0.5);
 
     if (!songsWithoutLikes || songsWithoutLikes.length === 0)
