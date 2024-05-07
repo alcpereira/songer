@@ -1,36 +1,23 @@
-# Welcome to Remix + Vite!
+## Tech stack
 
-📖 See the [Remix docs](https://remix.run/docs) and the [Remix Vite docs](https://remix.run/docs/en/main/guides/vite) for details on supported features.
+- Remix (React + TypeScript)
+- shadcn/ui
+- Drizzle ORM + Turso
+- Spotify Embed API
 
-## Development
+## Todo MVP
 
-Run the Vite dev server:
+- [x] Login
+- [x] Search song
+- [x] Add loading state to search
+- [ ] Suggest song
+- [ ] Suggest song options
+- [ ] Like / Dislike / Super Like / Super Dislike
+- [ ] Styling Like button
+- [ ] Overall styling
+- [ ] Dashboard
 
-```shellscript
-npm run dev
-```
+## Nice to have
 
-## Deployment
-
-First, build your app for production:
-
-```sh
-npm run build
-```
-
-Then run the app in production mode:
-
-```sh
-npm start
-```
-
-Now you'll need to pick a host to deploy it to.
-
-### DIY
-
-If you're familiar with deploying Node applications, the built-in Remix app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-- `build/server`
-- `build/client`
+- [ ] Add preview player to search song
+- [ ] Potential bug fixes
