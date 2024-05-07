@@ -10,7 +10,7 @@ import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
 import { Form, useActionData } from "@remix-run/react";
-import { authenticator } from "~/services/auth.server";
+import { authenticator } from "~/.server/services/auth";
 import { AuthorizationError } from "remix-auth";
 
 export async function loader({ request }: LoaderFunctionArgs) {

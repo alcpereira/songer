@@ -1,5 +1,5 @@
-import { type SpotifySearchResult } from "~/types/searchResult.server";
-import { env } from "./env.server";
+import { type SpotifySearchResult } from "~/types";
+import { env } from "./env";
 
 async function getSpotifyToken() {
   const spotifyString = btoa(

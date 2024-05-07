@@ -1,5 +1,5 @@
-import { db } from "./db.server";
-import { InsertUser, users } from "./schema.server";
+import { db } from "./db";
+import { InsertUser, users } from "./schema";
 import bcrypt from "bcryptjs";
 
 const usersToInsert: (Omit<InsertUser, "hash"> & {

@@ -1,8 +1,8 @@
 import { Authenticator, AuthorizationError } from "remix-auth";
 import { FormStrategy } from "remix-auth-form";
-import { sessionStorage } from "~/services/session.server";
-import { type SelectUser } from "~/db/schema.server";
-import { getUser } from "~/db/user.server";
+import { sessionStorage } from "~/.server/services/session.server";
+import { type SelectUser } from "~/.server/db/schema";
+import { getUser } from "~/.server/db/user";
 import bcrypt from "bcryptjs";
 
 export type User = Omit<SelectUser, "hash">;

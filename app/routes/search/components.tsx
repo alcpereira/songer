@@ -1,32 +1,9 @@
-import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
-import { Form, redirect, useActionData, useNavigation } from "@remix-run/react";
 import { Button } from "~/components/ui/button";
-import { Input } from "~/components/ui/input";
-import { authenticator } from "~/services/auth.server";
-import { fetchSpotifySong } from "~/services/spotify.server";
 import {
-  ImageObject,
-  SearchResult as SearchResultType,
   SpotifySearchResult,
-} from "~/types/searchResult.server";
-
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const user = await authenticator.isAuthenticated(request, {
-    failureRedirect: "/login",
-  });
-  return null;
-};
-
-export const action = async ({ request }: ActionFunctionArgs) => {
-  const body = await request.formData();
-  const searchString = String(body.get("search"));
-  if (!searchString) {
-    throw redirect("/login");
-  }
-  const results = await fetchSpotifySong(searchString);
-
-  return results;
-};
+  SearchResult as SearchResultType,
+  ImageObject,
+} from "~/types";
 
 function SearchResultPlaceHolder() {
   return (
@@ -94,28 +71,4 @@ function SearchResult({ data }: { data: SpotifySearchResult }) {
   );
 }
 
-export default function Search() {
-  const data = useActionData<typeof action>();
-  const navigation = useNavigation();
-
-  const isSubmitting = navigation.formAction === "/search";
-
-  return (
-    <main className="max-w-[1000px] w-full flex flex-grow flex-col items-center justify-between p-24">
-      <Form className="flex gap-2 w-full" method="POST">
-        <Input
-          className="flex-grow"
-          placeholder="Search song on Spotify"
-          id="search"
-          name="search"
-          required
-        />
-        <Button variant="secondary" type="submit">
-          Search
-        </Button>
-      </Form>
-      {isSubmitting && <SearchResultPlaceHolder />}
-      {data && !isSubmitting && <SearchResult data={data} />}
-    </main>
-  );
-}
+export { SearchResult, SearchResultPlaceHolder };
