@@ -1,5 +1,5 @@
-import type { Config } from "drizzle-kit";
 import { env } from "~/.server/services/env";
+import { defineConfig } from "drizzle-kit";
 
 let url: string;
 let authToken: string | undefined;
@@ -13,12 +13,12 @@ if (env.NODE_ENV === "production") {
   console.log("[DB] Running DB in local mode");
 }
 
-export default {
+export default defineConfig({
   schema: "./app/.server/db/schema.ts",
-  out: "./app/db/migrations",
+  dialect: "sqlite",
   driver: "turso",
   dbCredentials: {
     url,
     authToken,
   },
-} satisfies Config;
+});

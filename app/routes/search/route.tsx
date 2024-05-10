@@ -3,32 +3,34 @@ import { Form, useLoaderData, useNavigation } from "@remix-run/react";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { authenticator } from "~/.server/services/auth";
-import { fetchSpotifySong } from "~/.server/services/spotify.server";
+import { fetchSpotifySong } from "~/.server/services/spotify";
 import { SearchResult, SearchResultPlaceHolder } from "./components";
+import { getRemainingSongs } from "~/.server/db/songs";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const user = await authenticator.isAuthenticated(request, {
     failureRedirect: "/login",
   });
 
+  const userInfo = {
+    userId: user.id,
+    remainingSongs: await getRemainingSongs(user.id),
+  };
   const searchParam = new URL(request.url).searchParams.get("search");
 
   if (searchParam) {
-    return { user, songs: await fetchSpotifySong(searchParam) };
+    return { userInfo, songs: await fetchSpotifySong(searchParam) };
   } else {
-    return { user, songs: null };
+    return { userInfo, songs: null };
   }
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
-  if (formData.get("intent") === "search") {
-    const searchString = String(formData.get("search"));
-    if (!searchString) {
-      throw Error("wtf bro");
-    }
-    return await fetchSpotifySong(searchString);
+  if (formData.get("intent") === "add") {
+    console.log(...formData.entries());
   }
+  return null;
 };
 
 export default function Search() {
@@ -53,7 +55,12 @@ export default function Search() {
         </Button>
       </Form>
       {isLoaderLoading && <SearchResultPlaceHolder />}
-      {data.songs && !isLoaderLoading && <SearchResult data={data.songs} />}
+      {data.songs && !isLoaderLoading && (
+        <SearchResult
+          spotifySearchResult={data.songs}
+          userInfo={data.userInfo}
+        />
+      )}
     </main>
   );
 }

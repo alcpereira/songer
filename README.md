@@ -10,8 +10,8 @@
 - [x] Login
 - [x] Search song
 - [x] Add loading state to search
-- [ ] Suggest song
-- [ ] Suggest song options
+- [ ] Add song
+- N/A Suggest song options
 - [ ] Like / Dislike / Super Like / Super Dislike
 - [ ] Styling Like button
 - [ ] Overall styling

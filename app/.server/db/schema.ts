@@ -1,4 +1,4 @@
-import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { integer, sqliteTable, text, numeric } from "drizzle-orm/sqlite-core";
 
 export const users = sqliteTable("users", {
   id: integer("id").primaryKey(),
@@ -35,9 +35,7 @@ export const likes = sqliteTable("likes", {
   userId: text("user_id")
     .notNull()
     .references(() => users.id),
-  value: text("value", {
-    enum: ["liked", "disliked", "superliked", "superdisliked"],
-  }).notNull(),
+  value: numeric("value").notNull(),
 });
 
 export type InsertLike = typeof likes.$inferInsert;

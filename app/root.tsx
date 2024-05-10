@@ -21,7 +21,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body className="w-full h-screen flex flex-col items-center justify-center">
+      <body>
         {children}
         <ScrollRestoration />
         <Scripts />
