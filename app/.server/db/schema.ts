@@ -1,4 +1,4 @@
-import { integer, sqliteTable, text, numeric } from "drizzle-orm/sqlite-core";
+import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 export const users = sqliteTable("users", {
   id: integer("id").primaryKey(),
@@ -17,7 +17,7 @@ export const songs = sqliteTable("songs", {
   id: integer("id").primaryKey(),
   spotifyId: text("spotify_id").unique().notNull(),
   spotifyImage: text("spotify_image").notNull(),
-  userId: text("user_id")
+  userId: integer("user_id")
     .notNull()
     .references(() => users.id),
   name: text("name").notNull(),
@@ -32,10 +32,10 @@ export const likes = sqliteTable("likes", {
   songId: integer("song_id")
     .notNull()
     .references(() => songs.id),
-  userId: text("user_id")
+  userId: integer("user_id")
     .notNull()
     .references(() => users.id),
-  value: numeric("value").notNull(),
+  value: integer("value").notNull(),
 });
 
 export type InsertLike = typeof likes.$inferInsert;

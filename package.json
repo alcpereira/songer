@@ -9,9 +9,10 @@
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
     "start": "remix-serve ./build/server/index.js",
     "typecheck": "tsc",
-    "db:migrate": "drizzle-kit generate:sqlite",
+    "db:migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
-    "db:seed": "tsx app/.server/db/seed.ts"
+    "db:seed": "tsx --env-file=.env app/.server/db/seed.ts"
   },
   "dependencies": {
     "@libsql/client": "^0.6.0",

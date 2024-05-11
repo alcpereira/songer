@@ -1,10 +1,12 @@
-import { db } from "./db";
-import { InsertUser, users } from "./schema";
+import * as schema from "./schema";
 import bcrypt from "bcryptjs";
+import { unlink, writeFile, access } from "node:fs/promises";
+import { join } from "node:path";
+import { migrate } from "drizzle-orm/libsql/migrator";
 
-const usersToInsert: (Omit<InsertUser, "hash"> & {
-  unhashedPassword: string;
-})[] = [
+type Users = Omit<schema.InsertUser, "hash"> & { unhashedPassword: string };
+
+const USERS: Users[] = [
   {
     username: "alex",
     unhashedPassword: "alex",
@@ -13,10 +15,26 @@ const usersToInsert: (Omit<InsertUser, "hash"> & {
   },
 ];
 
-usersToInsert.forEach(
-  async ({ name, username, unhashedPassword, permission }) => {
+async function seed() {
+  // Wiping database
+  const pathToDb = join(import.meta.dirname, "local.db");
+  await access(pathToDb);
+  await unlink(pathToDb);
+  await writeFile(pathToDb, "");
+
+  // Applying schema
+  const { db } = await import("./db");
+  await migrate(db, {
+    migrationsFolder: join(import.meta.dirname, "migrations"),
+  });
+
+  // Adding users
+  USERS.forEach(async ({ name, username, unhashedPassword, permission }) => {
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(unhashedPassword, salt);
-    await db.insert(users).values({ hash, name, username, permission });
-  }
-);
+    await db.insert(schema.users).values({ hash, name, username, permission });
+    console.log("[DB] 🌱 Adding user", username);
+  });
+}
+
+seed();
