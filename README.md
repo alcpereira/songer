@@ -10,7 +10,9 @@
 - [x] Login
 - [x] Search song
 - [x] Add loading state to search
-- [ ] Add song
+- [x] Add song
+- [ ] Routes / header
+- [ ] Player
 - N/A Suggest song options
 - [ ] Like / Dislike / Super Like / Super Dislike
 - [ ] Styling Like button
