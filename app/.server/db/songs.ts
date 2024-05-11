@@ -29,12 +29,13 @@ export async function addSong(
   if (remainingSongs === 0) {
     throw new Error("No remaining songs");
   }
+
   try {
     const result = await db
       .insert(songs)
       .values({ spotifyId, artist, name: songName, spotifyImage, userId });
     console.log(result.toJSON());
   } catch (error) {
-    console.log("Error here");
+    console.log("[DB] Error at `addSong`:", error);
   }
 }
