@@ -39,6 +39,7 @@ export async function fetchSpotifySong(search: string) {
     )}&type=track&limit=10`,
     { headers: { Authorization: `Bearer ${token}` } }
   );
-  const data: SpotifySearchResult = await spotifyRequest.json();
-  return data;
+  const result =
+    (await spotifyRequest.json()) as unknown as SpotifySearchResult;
+  return result.tracks.items;
 }

@@ -4,8 +4,12 @@ import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { authenticator } from "~/.server/services/auth";
 import { fetchSpotifySong } from "~/.server/services/spotify";
-import { SearchResult, SearchResultPlaceHolder } from "../components/search";
-import { addSong, getRemainingSongs } from "~/.server/db/songs";
+import {
+  SearchResult,
+  SearchResultPlaceHolder,
+} from "../components/searchComponents";
+import { addSong, getAllSongsIds, getRemainingSongs } from "~/.server/db/songs";
+import { updateSpotifySearchResult } from "~/.server/utils/updateSpotifySearchResult";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const user = await authenticator.isAuthenticated(request, {
@@ -19,7 +23,12 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const searchParam = new URL(request.url).searchParams.get("search");
 
   if (searchParam) {
-    return { userInfo, songs: await fetchSpotifySong(searchParam) };
+    const songs = updateSpotifySearchResult(
+      await fetchSpotifySong(searchParam),
+      await getAllSongsIds()
+    );
+
+    return { userInfo, songs };
   } else {
     return { userInfo, songs: null };
   }

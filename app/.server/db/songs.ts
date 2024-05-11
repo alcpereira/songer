@@ -13,6 +13,10 @@ export async function getRemainingSongs(userId: SelectUser["id"]) {
   return MAX_SONGS - rows.length;
 }
 
+export async function getAllSongsIds() {
+  return await db.select({ spotifyId: songs.spotifyId }).from(songs);
+}
+
 export async function addSong(
   userId: SelectUser["id"],
   spotifyId: InsertSong["spotifyId"],

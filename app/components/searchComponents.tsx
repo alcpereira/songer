@@ -9,9 +9,9 @@ import {
   DialogTitle,
 } from "~/components/ui/dialog";
 import {
-  SpotifySearchResult,
   SearchResult as SearchResultType,
   ImageObject,
+  UpdatedSpotifySearchResult,
 } from "~/types";
 
 function SearchResultPlaceHolder() {
@@ -58,7 +58,7 @@ function AddButton({
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="secondary" disabled={disabled}>
-          {!disabled ? "Add" : "Disabled"}
+          {!disabled ? "Add" : "Already picked"}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-2xl">
@@ -148,17 +148,16 @@ function SearchResult({
   spotifySearchResult,
   userInfo,
 }: {
-  spotifySearchResult: SpotifySearchResult;
+  spotifySearchResult: UpdatedSpotifySearchResult;
   userInfo: { userId: number; remainingSongs: number };
 }) {
   const displayResultsOrNull = () => {
-    if (!spotifySearchResult.tracks || !spotifySearchResult.tracks.items)
-      return null;
-    return spotifySearchResult.tracks.items.map((i) => (
+    if (spotifySearchResult.length === 0) return null;
+    return spotifySearchResult.map((i) => (
       <SearchResultItem
         key={i.id}
         data={i}
-        disabled={userInfo.remainingSongs === 0}
+        disabled={i.alreadyPicked}
         userId={userInfo.userId}
       />
     ));

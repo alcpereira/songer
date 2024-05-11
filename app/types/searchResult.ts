@@ -93,3 +93,7 @@ export type SpotifySearchResult = {
     total: number;
   };
 };
+
+export type UpdatedSpotifySearchResult = (SearchResult & {
+  alreadyPicked: boolean;
+})[];
