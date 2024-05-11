@@ -52,11 +52,13 @@ function AddButton({
 
   const isLoading = navigation.formAction === "/search";
 
+  const artistString = artists.map((i) => i.name).join(", ");
+
   return (
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="secondary" disabled={disabled}>
-          {!disabled ? "Add" : "Added!"}
+          {!disabled ? "Add" : "Disabled"}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-2xl">
@@ -74,9 +76,7 @@ function AddButton({
             <div className="flex flex-col gap-4 justify-center">
               <div className="flex flex-col gap-4 justify-center flex-grow">
                 <span className="text-2xl font-bold line-clamp-3">{name}</span>
-                <span className="">
-                  {artists.map((i) => i.name).join(", ")}
-                </span>
+                <span className="">{artistString}</span>
               </div>
             </div>
           </div>
@@ -84,9 +84,9 @@ function AddButton({
         <Form method="post">
           <input type="hidden" name="intent" value={"add"} />
           <input type="hidden" name="name" value={name} />
-          <input type="hidden" name="artists" value={artists.join(", ")} />
+          <input type="hidden" name="artist" value={artistString} />
           <input type="hidden" name="imageUrl" value={imageURL} />
-          <input type="hidden" name="id" value={id} />
+          <input type="hidden" name="spotifyId" value={id} />
           <input type="hidden" name="user_id" value={userId} />
 
           <Button disabled={isLoading} type="submit">
@@ -166,8 +166,7 @@ function SearchResult({
 
   return (
     <div className="flex flex-col gap-2 w-full">
-      {JSON.stringify(userInfo)}
-      {displayResultsOrNull()}
+      {userInfo.remainingSongs > 0 && displayResultsOrNull()}
     </div>
   );
 }
