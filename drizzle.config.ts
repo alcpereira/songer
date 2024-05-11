@@ -21,4 +21,5 @@ export default defineConfig({
     url,
     authToken,
   },
+  out: "./app/.server/db/migrations",
 });

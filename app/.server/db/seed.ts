@@ -21,12 +21,14 @@ async function seed() {
   await access(pathToDb);
   await unlink(pathToDb);
   await writeFile(pathToDb, "");
+  console.log("[DB] 🌱 New DB created");
 
   // Applying schema
   const { db } = await import("./db");
   await migrate(db, {
     migrationsFolder: join(import.meta.dirname, "migrations"),
   });
+  console.log("[DB] 🌱 Migration done");
 
   // Adding users
   USERS.forEach(async ({ name, username, unhashedPassword, permission }) => {

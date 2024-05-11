@@ -1,12 +1,12 @@
 {
-  "version": "5",
+  "version": "6",
   "dialect": "sqlite",
   "entries": [
     {
       "idx": 0,
-      "version": "5",
-      "when": 1715028505347,
-      "tag": "0000_unique_zombie",
+      "version": "6",
+      "when": 1715433130176,
+      "tag": "0000_silky_wildside",
       "breakpoints": true
     }
   ]

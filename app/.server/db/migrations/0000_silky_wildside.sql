@@ -11,7 +11,7 @@ CREATE TABLE `songs` (
 	`id` integer PRIMARY KEY NOT NULL,
 	`spotify_id` text NOT NULL,
 	`spotify_image` text NOT NULL,
-	`user_id` text NOT NULL,
+	`user_id` integer NOT NULL,
 	`name` text NOT NULL,
 	`artist` text NOT NULL,
 	FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE no action
