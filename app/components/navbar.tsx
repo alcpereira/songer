@@ -18,7 +18,7 @@ export function Navbar({
         </a>
       </div>
       <div>
-        <ul className="flex items-center gap-8">
+        <ul className="flex items-center gap-10">
           {isLoggedIn && (
             <>
               {canSeeDashboard && (
