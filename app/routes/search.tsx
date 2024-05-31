@@ -3,13 +3,19 @@ import { Form, useLoaderData, useNavigation } from "@remix-run/react";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { authenticator } from "~/.server/services/auth";
-import { fetchSpotifySong } from "~/.server/services/spotify";
 import {
   SearchResult,
   SearchResultPlaceHolder,
 } from "../components/searchComponents";
-import { addSong, getAllSongsIds, getRemainingSongs } from "~/.server/db/songs";
-import { updateSpotifySearchResult } from "~/.server/utils/updateSpotifySearchResult";
+import { addSong, doSongExist, getRemainingSongs } from "~/.server/db/songs";
+import { getYoutubeTitle } from "~/.server/services/youtube";
+
+function youtubeParser(url: string) {
+  const regExp =
+    /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+  const match = url.match(regExp);
+  return match && match[7].length == 11 ? match[7] : false;
+}
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const user = await authenticator.isAuthenticated(request, {
@@ -23,14 +29,23 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const searchParam = new URL(request.url).searchParams.get("search");
 
   if (searchParam) {
-    const songs = updateSpotifySearchResult(
-      await fetchSpotifySong(searchParam),
-      await getAllSongsIds()
-    );
+    const youtubeId = youtubeParser(searchParam);
 
-    return { userInfo, songs };
+    if (!youtubeId) {
+      return { error: "Invalid URL" };
+    }
+
+    await new Promise((res) => setTimeout(() => res(true), 1000));
+    const youtubeVideo = await getYoutubeTitle(youtubeId);
+    const songsExists = await doSongExist(youtubeId);
+
+    if (!youtubeVideo) {
+      return { userInfo, youtubeVideo: null };
+    }
+
+    return { userInfo, youtubeVideo: { ...youtubeVideo, exists: songsExists } };
   } else {
-    return { userInfo, songs: null };
+    return { userInfo, youtubeVideo: null };
   }
 };
 
@@ -43,23 +58,26 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   const formData = await request.formData();
   if (formData.get("intent") === "add") {
-    const name = String(formData.get("name"));
-    const artist = String(formData.get("artist"));
-    const imageUrl = String(formData.get("imageUrl"));
-    const spotifyId = String(formData.get("spotifyId"));
+    const title = String(formData.get("title"));
+    const comment = String(formData.get("comment"));
+    const youtubeId = String(formData.get("youtube_id"));
     const userId = Number(formData.get("user_id"));
 
     if (userId !== user.id) {
       return json({ error: "Not authorized" });
     }
 
-    if (!name || !artist || !imageUrl || !spotifyId || !userId) {
-      console.log(name, artist, imageUrl, spotifyId, userId);
+    if (comment.length > 100) {
+      return json({ error: "Comment too long, you really tried this?" });
+    }
+
+    if (!title || !youtubeId || !userId) {
       return json({ error: "Invalid form" });
     }
     try {
-      addSong(userId, spotifyId, artist, name, imageUrl);
-    } catch (_) {
+      addSong({ userId, comment, title, youtubeId });
+    } catch (e) {
+      console.log("[Search Form] Error:", e);
       return json({ error: "Error trying to add" });
     }
   }
@@ -73,31 +91,38 @@ export default function Search() {
 
   const isLoaderLoading = navigation.state === "loading";
 
-  if (data.userInfo.remainingSongs === 0) {
+  const isError = "error" in data;
+
+  if (!isError && data.userInfo.remainingSongs === 0) {
     return (
-      <p className="text-red-600 text-xl text-center">No more songs for you</p>
+      <p className="text-green-500 text-xl text-center py-12">
+        Thank you for submitting your songs
+      </p>
     );
   }
 
   return (
-    <main className="max-w-[1000px] w-full flex flex-grow flex-col items-center justify-between p-24 gap-8">
-      <Form className="flex gap-2 w-full" method="GET">
-        <Input
-          className="flex-grow"
-          placeholder="Search song on Spotify"
-          id="search"
-          name="search"
-          required
-        />
-        <Button variant="secondary" type="submit">
-          Search
-        </Button>
-      </Form>
+    <main className="max-w-[1000px] w-full flex flex-grow flex-col items-start justify-between p-24 gap-8">
+      <div className="flex flex-col gap-4 flex-grow justify-end w-full">
+        <Form className="flex gap-2" method="GET">
+          <Input
+            className="flex-grow"
+            placeholder="Paste the YouTube link. For example: https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+            id="search"
+            name="search"
+            required
+          />
+          <Button variant="secondary" type="submit" className="min-w-32">
+            Search
+          </Button>
+        </Form>
+        {isError && <p className="text-red-600">Invalid URL</p>}
+      </div>
       {isLoaderLoading && <SearchResultPlaceHolder />}
-      {data.songs && !isLoaderLoading && (
+      {!isError && data.youtubeVideo && !isLoaderLoading && (
         <SearchResult
-          spotifySearchResult={data.songs}
-          userInfo={data.userInfo}
+          youtubeVideo={data.youtubeVideo}
+          userId={data.userInfo.userId}
         />
       )}
     </main>

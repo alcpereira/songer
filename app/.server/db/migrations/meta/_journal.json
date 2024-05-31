@@ -8,6 +8,13 @@
       "when": 1717188487703,
       "tag": "0000_hesitant_warstar",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1717192430695,
+      "tag": "0001_wakeful_patch",
+      "breakpoints": true
     }
   ]
 }

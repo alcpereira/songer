@@ -2,8 +2,6 @@ import { TypeOf, z } from "zod";
 
 const envSchema = z.object({
   SESSION_SECRETS: z.string().min(1),
-  SPOTIFY_CLIENT_ID: z.string().min(1),
-  SPOTIFY_CLIENT_SECRET: z.string().min(1),
   YOUTUBE_API: z.string().min(1),
   TURSO_DATABASE_URL: z.string().min(1),
   TURSO_AUTH_TOKEN: z.string().min(1),

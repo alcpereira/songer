@@ -15,7 +15,7 @@ export type SelectUser = typeof users.$inferSelect;
 
 export const songs = sqliteTable("songs", {
   id: integer("id").primaryKey(),
-  youtubeLink: text("youtube_link").unique().notNull(),
+  youtubeId: text("youtube_id").unique().notNull(),
   userId: integer("user_id")
     .notNull()
     .references(() => users.id),

@@ -7,7 +7,7 @@
 ## Todo MVP
 
 - [x] Login
-- [ ] Add song with comment
+- [x] Add song with comment
 - [ ] Get songs to vote
 - [ ] Player
 - [ ] Vote from -2 to +2
