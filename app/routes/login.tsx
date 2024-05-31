@@ -15,14 +15,14 @@ import { AuthorizationError } from "remix-auth";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   return await authenticator.isAuthenticated(request, {
-    successRedirect: "/success",
+    successRedirect: "/",
   });
 }
 
 export async function action({ request }: ActionFunctionArgs) {
   try {
     return await authenticator.authenticate("user-pass", request, {
-      successRedirect: "/success",
+      successRedirect: "/",
       throwOnError: true,
     });
   } catch (error) {

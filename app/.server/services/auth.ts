@@ -17,13 +17,14 @@ authenticator.use(
     const [userFromDb] = await getUser(username);
 
     if (!userFromDb) {
-      console.log("user not found");
+      console.log("[Auth] User not found");
       throw new AuthorizationError("User not found");
     }
 
     const passwordMatch = await bcrypt.compare(password, userFromDb.hash);
 
     if (!passwordMatch) {
+      console.log("[Auth] Invalid password");
       throw new AuthorizationError("Invalid password");
     }
 

@@ -3,23 +3,14 @@
 - Remix (React + TypeScript)
 - shadcn/ui
 - Drizzle ORM + Turso
-- Spotify Embed API
 
 ## Todo MVP
 
 - [x] Login
-- [x] Search song
-- [x] Add loading state to search
-- [x] Add song
-- [ ] Routes / header
+- [ ] Add song with comment
+- [ ] Get songs to vote
 - [ ] Player
-- N/A Suggest song options
-- [ ] Like / Dislike / Super Like / Super Dislike
-- [ ] Styling Like button
-- [ ] Overall styling
+- [ ] Vote from -2 to +2
 - [ ] Dashboard
-
-## Nice to have
-
-- [ ] Add preview player to search song
-- [ ] Potential bug fixes
+- [ ] Seeding
+- [ ] Testing

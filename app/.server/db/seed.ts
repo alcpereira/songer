@@ -13,6 +13,12 @@ const USERS: Users[] = [
     name: "Alex",
     permission: "admin",
   },
+  {
+    username: "xela",
+    unhashedPassword: "xela",
+    name: "Xela",
+    permission: "user",
+  },
 ];
 
 async function seed() {

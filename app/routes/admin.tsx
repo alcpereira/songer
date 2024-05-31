@@ -8,13 +8,13 @@ export async function loader({ request }: LoaderFunctionArgs) {
   });
 
   if (user.permission !== "admin") {
-    throw redirect("/vote");
+    throw redirect("/");
   }
 
   return { user };
 }
 
-export default function SuccessPage() {
+export default function AdminPage() {
   const data = useLoaderData<typeof loader>();
 
   return <h1>{JSON.stringify(data.user)}</h1>;
