@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "8fca3bc0-f0f3-4b53-b011-3ecadebcf5a8",
+  "id": "6b072f1d-8c4e-45dd-9f2c-f6926a29a6e8",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "likes": {
@@ -78,15 +78,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "spotify_id": {
-          "name": "spotify_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "spotify_image": {
-          "name": "spotify_image",
+        "youtube_link": {
+          "name": "youtube_link",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
@@ -99,15 +92,15 @@
           "notNull": true,
           "autoincrement": false
         },
-        "name": {
-          "name": "name",
+        "comment": {
+          "name": "comment",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
-        "artist": {
-          "name": "artist",
+        "title": {
+          "name": "title",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
@@ -115,10 +108,10 @@
         }
       },
       "indexes": {
-        "songs_spotify_id_unique": {
-          "name": "songs_spotify_id_unique",
+        "songs_youtube_link_unique": {
+          "name": "songs_youtube_link_unique",
           "columns": [
-            "spotify_id"
+            "youtube_link"
           ],
           "isUnique": true
         }

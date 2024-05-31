@@ -9,11 +9,10 @@ CREATE TABLE `likes` (
 --> statement-breakpoint
 CREATE TABLE `songs` (
 	`id` integer PRIMARY KEY NOT NULL,
-	`spotify_id` text NOT NULL,
-	`spotify_image` text NOT NULL,
+	`youtube_link` text NOT NULL,
 	`user_id` integer NOT NULL,
-	`name` text NOT NULL,
-	`artist` text NOT NULL,
+	`comment` text NOT NULL,
+	`title` text NOT NULL,
 	FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
@@ -25,5 +24,5 @@ CREATE TABLE `users` (
 	`hash` text NOT NULL
 );
 --> statement-breakpoint
-CREATE UNIQUE INDEX `songs_spotify_id_unique` ON `songs` (`spotify_id`);--> statement-breakpoint
+CREATE UNIQUE INDEX `songs_youtube_link_unique` ON `songs` (`youtube_link`);--> statement-breakpoint
 CREATE UNIQUE INDEX `users_username_unique` ON `users` (`username`);

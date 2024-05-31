@@ -15,13 +15,12 @@ export type SelectUser = typeof users.$inferSelect;
 
 export const songs = sqliteTable("songs", {
   id: integer("id").primaryKey(),
-  spotifyId: text("spotify_id").unique().notNull(),
-  spotifyImage: text("spotify_image").notNull(),
+  youtubeLink: text("youtube_link").unique().notNull(),
   userId: integer("user_id")
     .notNull()
     .references(() => users.id),
-  name: text("name").notNull(),
-  artist: text("artist").notNull(),
+  comment: text("comment").notNull(),
+  title: text("title").notNull(),
 });
 
 export type InsertSong = typeof songs.$inferInsert;
