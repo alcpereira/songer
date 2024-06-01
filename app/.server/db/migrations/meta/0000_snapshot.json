@@ -1,19 +1,12 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "6b072f1d-8c4e-45dd-9f2c-f6926a29a6e8",
+  "id": "b0a2894c-c95c-4ec9-943a-6628d59ee157",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "likes": {
       "name": "likes",
       "columns": {
-        "id": {
-          "name": "id",
-          "type": "integer",
-          "primaryKey": true,
-          "notNull": true,
-          "autoincrement": false
-        },
         "song_id": {
           "name": "song_id",
           "type": "integer",
@@ -65,7 +58,15 @@
           "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {},
+      "compositePrimaryKeys": {
+        "likes_song_id_user_id_pk": {
+          "columns": [
+            "song_id",
+            "user_id"
+          ],
+          "name": "likes_song_id_user_id_pk"
+        }
+      },
       "uniqueConstraints": {}
     },
     "songs": {
@@ -78,8 +79,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "youtube_link": {
-          "name": "youtube_link",
+        "youtube_id": {
+          "name": "youtube_id",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
@@ -108,10 +109,10 @@
         }
       },
       "indexes": {
-        "songs_youtube_link_unique": {
-          "name": "songs_youtube_link_unique",
+        "songs_youtube_id_unique": {
+          "name": "songs_youtube_id_unique",
           "columns": [
-            "youtube_link"
+            "youtube_id"
           ],
           "isUnique": true
         }

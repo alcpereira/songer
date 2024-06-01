@@ -1,4 +1,9 @@
-import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import {
+  integer,
+  primaryKey,
+  sqliteTable,
+  text,
+} from "drizzle-orm/sqlite-core";
 
 export const users = sqliteTable("users", {
   id: integer("id").primaryKey(),
@@ -26,16 +31,23 @@ export const songs = sqliteTable("songs", {
 export type InsertSong = typeof songs.$inferInsert;
 export type SelectSong = typeof songs.$inferSelect;
 
-export const likes = sqliteTable("likes", {
-  id: integer("id").primaryKey(),
-  songId: integer("song_id")
-    .notNull()
-    .references(() => songs.id),
-  userId: integer("user_id")
-    .notNull()
-    .references(() => users.id),
-  value: integer("value").notNull(),
-});
+export const likes = sqliteTable(
+  "likes",
+  {
+    songId: integer("song_id")
+      .notNull()
+      .references(() => songs.id),
+    userId: integer("user_id")
+      .notNull()
+      .references(() => users.id),
+    value: integer("value").notNull(),
+  },
+  (table) => {
+    return {
+      pk: primaryKey({ columns: [table.songId, table.userId] }),
+    };
+  }
+);
 
 export type InsertLike = typeof likes.$inferInsert;
 export type SelectLike = typeof likes.$inferSelect;
