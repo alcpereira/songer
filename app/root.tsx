@@ -31,7 +31,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className="flex flex-col items-center gap-10">
         <Navbar isLoggedIn={isLoggedIn} canSeeDashboard={canSeeDashboard} />
         {children}
         <ScrollRestoration />

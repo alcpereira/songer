@@ -1,4 +1,5 @@
 import { NavLink } from "@remix-run/react";
+import { cn } from "~/lib/utils";
 
 export function Navbar({
   isLoggedIn,
@@ -8,14 +9,19 @@ export function Navbar({
   canSeeDashboard: boolean;
 }) {
   return (
-    <nav
-      className="flex items-center justify-between w-full py-4 px-8 px
--24"
-    >
+    <nav className="flex items-center justify-between w-full py-4 px-10 border-b underline-offset-8">
       <div>
-        <a className="text-2xl font-bold" href="/">
+        <NavLink
+          className={({ isActive }) =>
+            cn(
+              "text-2xl font-bold cursor-pointer",
+              isActive && "underline decoration-slate-500"
+            )
+          }
+          to="/"
+        >
           Songer
-        </a>
+        </NavLink>
       </div>
       <div>
         <ul className="flex items-center gap-10">
@@ -23,20 +29,41 @@ export function Navbar({
             <>
               {canSeeDashboard && (
                 <li>
-                  <NavLink to="/admin" className="text-m font-bold">
+                  <NavLink
+                    className={({ isActive }) =>
+                      cn(
+                        "text-m font-bold cursor-pointer",
+                        isActive && "underline decoration-slate-500"
+                      )
+                    }
+                    to="/admin"
+                  >
                     Dashboard
                   </NavLink>
                 </li>
               )}
               <li>
-                <NavLink to="/search" className="text-m font-bold">
+                <NavLink
+                  className={({ isActive }) =>
+                    cn(
+                      "text-m font-bold cursor-pointer",
+                      isActive && "underline decoration-slate-500"
+                    )
+                  }
+                  to="/search"
+                >
                   Add a song
                 </NavLink>
               </li>
               <li className="flex items-center gap-2">
                 <NavLink
+                  className={({ isActive }) =>
+                    cn(
+                      "text-m font-bold cursor-pointer",
+                      isActive && "underline decoration-slate-500"
+                    )
+                  }
                   to="/logout"
-                  className="text-m font-bold cursor-pointer"
                 >
                   Logout
                 </NavLink>
@@ -45,7 +72,15 @@ export function Navbar({
           )}
           {!isLoggedIn && (
             <li>
-              <NavLink to="/login" className="text-m font-bold cursor-pointer">
+              <NavLink
+                to="/login"
+                className={({ isActive }) =>
+                  cn(
+                    "text-m font-bold cursor-pointer",
+                    isActive && "underline decoration-slate-500"
+                  )
+                }
+              >
                 Login
               </NavLink>
             </li>
