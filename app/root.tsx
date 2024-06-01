@@ -16,13 +16,16 @@ export const links: LinksFunction = () => [
 ];
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  return await authenticator.isAuthenticated(request);
+  const user = await authenticator.isAuthenticated(request);
+
+  return {
+    isLoggedIn: user !== null,
+    canSeeDashboard: user !== null && user.permission === "admin",
+  };
 }
 
 export function Layout({ children }: { children: React.ReactNode }) {
-  const data = useLoaderData<typeof loader>();
-  const isLoggedIn = !!data;
-  const canSeeDashboard = (!!data && data.permission === "admin") ?? false;
+  const { isLoggedIn, canSeeDashboard } = useLoaderData<typeof loader>();
   return (
     <html lang="en" className="dark">
       <head>
