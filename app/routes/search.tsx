@@ -85,7 +85,10 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 export default function Search() {
-  // const data = useActionData<typeof action>();
+  /**
+   * @todo better UI feedback (loading, confirmation added)
+   * May need to change to have only POST instead of GET here
+   */
   const data = useLoaderData<typeof loader>();
   const navigation = useNavigation();
 

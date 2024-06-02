@@ -8,9 +8,9 @@
 
 - [x] Login
 - [x] Add song with comment
-- [ ] Get songs to vote
-- [ ] Player
-- [ ] Vote from -2 to +2
+- [x] Get songs to vote
+- [x] Player
+- [x] Vote from -2 to +2
 - [ ] Dashboard
 - [ ] Seeding
 - [ ] Testing
