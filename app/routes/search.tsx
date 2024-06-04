@@ -23,7 +23,6 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   });
 
   const userInfo = {
-    userId: user.id,
     remainingSongs: await getRemainingSongs(user.id),
   };
   const searchParam = new URL(request.url).searchParams.get("search");
@@ -61,11 +60,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     const title = String(formData.get("title"));
     const comment = String(formData.get("comment"));
     const youtubeId = String(formData.get("youtube_id"));
-    const userId = Number(formData.get("user_id"));
-
-    if (userId !== user.id) {
-      return json({ error: "Not authorized" });
-    }
+    const userId = user.id;
 
     if (comment.length > 100) {
       return json({ error: "Comment too long, you really tried this?" });
@@ -123,10 +118,7 @@ export default function Search() {
       </div>
       {isLoaderLoading && <SearchResultPlaceHolder />}
       {!isError && data.youtubeVideo && !isLoaderLoading && (
-        <SearchResult
-          youtubeVideo={data.youtubeVideo}
-          userId={data.userInfo.userId}
-        />
+        <SearchResult youtubeVideo={data.youtubeVideo} />
       )}
     </main>
   );

@@ -27,17 +27,10 @@ type AddButtonProps = {
   youtubeId: string;
   thumbnail: youtube_v3.Schema$Thumbnail;
   title: string;
-  userId: number;
   disabled: boolean;
 };
 
-function AddButton({
-  youtubeId,
-  userId,
-  title,
-  disabled,
-  thumbnail,
-}: AddButtonProps) {
+function AddButton({ youtubeId, title, disabled, thumbnail }: AddButtonProps) {
   const navigation = useNavigation();
   const isLoading = navigation.formAction === "/search";
 
@@ -86,7 +79,6 @@ function AddButton({
             <input type="hidden" name="intent" value={"add"} />
             <input type="hidden" name="title" value={title} />
             <input type="hidden" name="youtube_id" value={youtubeId} />
-            <input type="hidden" name="user_id" value={userId} />
 
             <Button disabled={isLoading} type="submit">
               {isLoading ? "Saving..." : "Save song"}
@@ -100,7 +92,6 @@ function AddButton({
 
 function SearchResult({
   youtubeVideo,
-  userId,
 }: {
   youtubeVideo: {
     exists: boolean;
@@ -108,7 +99,6 @@ function SearchResult({
     title?: string | null | undefined;
     thumbnail?: youtube_v3.Schema$Thumbnail | undefined;
   };
-  userId: number;
 }) {
   if (
     !youtubeVideo ||
@@ -137,7 +127,6 @@ function SearchResult({
         title={youtubeVideo.title}
         youtubeId={youtubeVideo.id}
         disabled={youtubeVideo.exists}
-        userId={userId}
       />
     </div>
   );
