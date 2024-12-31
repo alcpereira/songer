@@ -121,3 +121,11 @@ export async function voteForSong({
     }
   }
 }
+
+export async function getSongResults() {
+  const allLikes = await db
+    .select()
+    .from(songs)
+    .fullJoin(likes, eq(songs.id, likes.songId));
+  return allLikes;
+}

@@ -1,5 +1,6 @@
 import { redirect, type LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
+import { getSongResults } from "~/.server/db/songs";
 import { authenticator } from "~/.server/services/auth";
 
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -11,11 +12,12 @@ export async function loader({ request }: LoaderFunctionArgs) {
     throw redirect("/");
   }
 
-  return { user };
+  return await getSongResults();
 }
 
 export default function AdminPage() {
   const data = useLoaderData<typeof loader>();
 
-  return <h1>{JSON.stringify(data.user)}</h1>;
+  // TODO: Add admin page
+  return <h1>{JSON.stringify(data)}</h1>;
 }
