@@ -44,7 +44,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
     return { userInfo, youtubeVideo: { ...youtubeVideo, exists: songsExists } };
   } else {
-    return { userInfo, youtubeVideo: null };
+    return { userInfo };
   }
 };
 
@@ -117,9 +117,14 @@ export default function Search() {
         {isError && <p className="text-red-600">Invalid URL</p>}
       </div>
       {isLoaderLoading && <SearchResultPlaceHolder />}
-      {!isError && data.youtubeVideo && !isLoaderLoading && (
-        <SearchResult youtubeVideo={data.youtubeVideo} />
-      )}
+      {!isError &&
+        !isLoaderLoading &&
+        "youtubeVideo" in data &&
+        data.youtubeVideo === null && <p>Video not found</p>}
+      {!isError &&
+        "youtubeVideo" in data &&
+        data.youtubeVideo &&
+        !isLoaderLoading && <SearchResult youtubeVideo={data.youtubeVideo} />}
     </main>
   );
 }
