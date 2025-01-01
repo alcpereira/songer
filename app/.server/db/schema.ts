@@ -23,7 +23,7 @@ export const songs = sqliteTable("songs", {
   youtubeId: text("youtube_id").unique().notNull(),
   userId: integer("user_id")
     .notNull()
-    .references(() => users.id),
+    .references(() => users.id, { onDelete: "cascade" }),
   comment: text("comment").notNull(),
   title: text("title").notNull(),
 });
@@ -36,17 +36,13 @@ export const likes = sqliteTable(
   {
     songId: integer("song_id")
       .notNull()
-      .references(() => songs.id),
+      .references(() => songs.id, { onDelete: "cascade" }),
     userId: integer("user_id")
       .notNull()
-      .references(() => users.id),
+      .references(() => users.id, { onDelete: "cascade" }),
     value: integer("value").notNull(),
   },
-  (table) => {
-    return {
-      pk: primaryKey({ columns: [table.songId, table.userId] }),
-    };
-  }
+  (table) => [primaryKey({ columns: [table.songId, table.userId] })]
 );
 
 export type InsertLike = typeof likes.$inferInsert;

@@ -40,16 +40,33 @@ const SONGS: Songs[] = [
 async function seed() {
   // Wiping database
   const pathToDb = join(import.meta.dirname, "local.db");
-  await access(pathToDb);
-  await unlink(pathToDb);
+  let dbExists = false;
+  try {
+    await access(pathToDb);
+    dbExists = true;
+  } catch (error) {
+    console.log("[Seed] 🌱 No DB found... Creating new one");
+  }
+
+  if (dbExists) await unlink(pathToDb);
+
   await writeFile(pathToDb, "");
   console.log("[Seed] 🌱 New DB created");
 
-  // Applying schema
+  // Applying migrations
   const { db } = await import("./db");
-  await migrate(db, {
-    migrationsFolder: join(import.meta.dirname, "migrations"),
-  });
+
+  const migrationsFolder = join(import.meta.dirname, "migrations");
+  try {
+    await migrate(db, {
+      migrationsFolder,
+    });
+  } catch (error) {
+    console.log(
+      "[Seed] 🌱 No migrations found... Please run `pnpm db:generate` first"
+    );
+    throw new Error("No migrations found");
+  }
   console.log("[Seed] 🌱 Migration done");
 
   // Adding users

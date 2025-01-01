@@ -14,8 +14,7 @@ if (process.env.NODE_ENV === "production") {
 
 export default defineConfig({
   schema: "./app/.server/db/schema.ts",
-  dialect: "sqlite",
-  driver: "turso",
+  dialect: "turso",
   dbCredentials: {
     url,
     authToken,
