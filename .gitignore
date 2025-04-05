@@ -4,5 +4,5 @@ node_modules
 /build
 .env
 
-app/.server/db/local.db
+app/.server/db/local.db*
 app/.server/db/migrations/
