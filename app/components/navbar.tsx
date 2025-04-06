@@ -37,6 +37,7 @@ export function Navbar({
                       )
                     }
                     to="/admin"
+                    prefetch="intent"
                   >
                     Dashboard
                   </NavLink>
@@ -51,6 +52,7 @@ export function Navbar({
                     )
                   }
                   to="/search"
+                  prefetch="intent"
                 >
                   Add a song
                 </NavLink>
