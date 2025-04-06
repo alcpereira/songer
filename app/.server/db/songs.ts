@@ -195,3 +195,13 @@ export async function removeAllSongs() {
     return { success: false, message: "Something went wrong" };
   }
 }
+
+export async function removeAllLikes() {
+  try {
+    await db.delete(likes);
+    return { success: true, message: "All likes removed" };
+  } catch (error) {
+    console.log("[DB] Error at `removeAllLikes`:", error);
+    return { success: false, message: "Something went wrong" };
+  }
+}
