@@ -1,14 +1,20 @@
-import { ActionFunctionArgs, LoaderFunctionArgs, json } from "@remix-run/node";
+import {
+  ActionFunctionArgs,
+  LoaderFunctionArgs,
+  data,
+  json,
+  redirect,
+} from "@remix-run/node";
 import { Form, useLoaderData, useNavigation } from "@remix-run/react";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
-import { authenticator } from "~/.server/services/auth";
 import {
   SearchResult,
   SearchResultPlaceHolder,
 } from "../components/searchComponents";
 import { addSong, doSongExist, getRemainingSongs } from "~/.server/db/songs";
 import { getYoutubeTitle } from "~/.server/services/youtube";
+import { getUserSession } from "~/.server/services/session";
 
 function youtubeParser(url: string) {
   const regExp =
@@ -18,9 +24,10 @@ function youtubeParser(url: string) {
 }
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const user = await authenticator.isAuthenticated(request, {
-    failureRedirect: "/login",
-  });
+  const user = await getUserSession(request);
+  if (!user) {
+    throw redirect("/login");
+  }
 
   const userInfo = {
     remainingSongs: await getRemainingSongs(user.id),
@@ -49,7 +56,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
-  const user = await authenticator.isAuthenticated(request);
+  const user = await getUserSession(request);
 
   if (!user) {
     return json({ error: "Not authorized" });
@@ -76,7 +83,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       return json({ error: "Error trying to add" });
     }
   }
-  return null;
+  return data(null);
 };
 
 export default function Search() {

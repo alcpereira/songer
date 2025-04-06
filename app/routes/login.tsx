@@ -8,30 +8,46 @@ import {
 import { Label } from "~/components/ui/label";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
-import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
+import {
+  redirect,
+  ActionFunctionArgs,
+  LoaderFunctionArgs,
+  data,
+} from "@remix-run/node";
 import { Form, useActionData } from "@remix-run/react";
 import { authenticator } from "~/.server/services/auth";
-import { AuthorizationError } from "remix-auth";
+import { sessionStorage } from "~/.server/services/session";
 
-export async function loader({ request }: LoaderFunctionArgs) {
-  return await authenticator.isAuthenticated(request, {
-    successRedirect: "/",
+export async function action({ request }: ActionFunctionArgs) {
+  let user;
+  try {
+    user = await authenticator.authenticate("user-pass", request);
+  } catch (error) {
+    console.log("[Login] Error", error);
+    if (error instanceof Error) {
+      return error.message;
+    }
+    return "Unknown error";
+  }
+  const session = await sessionStorage.getSession(
+    request.headers.get("Cookie")
+  );
+  session.set("user", user);
+  const cookie = await sessionStorage.commitSession(session);
+  throw redirect("/", {
+    headers: {
+      "Set-Cookie": cookie,
+    },
   });
 }
 
-export async function action({ request }: ActionFunctionArgs) {
-  try {
-    return await authenticator.authenticate("user-pass", request, {
-      successRedirect: "/",
-      throwOnError: true,
-    });
-  } catch (error) {
-    if (error instanceof Response) return error;
-    if (error instanceof AuthorizationError) {
-      return error.message;
-    }
-    return null;
-  }
+export async function loader({ request }: LoaderFunctionArgs) {
+  const session = await sessionStorage.getSession(
+    request.headers.get("Cookie")
+  );
+  const user = session.get("user");
+  if (user) throw redirect("/");
+  return data(null);
 }
 
 export default function LoginPage() {

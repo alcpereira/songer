@@ -4,28 +4,28 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-  useLoaderData,
+  useRouteLoaderData,
 } from "@remix-run/react";
 import { LinksFunction, LoaderFunctionArgs } from "@remix-run/node";
 import stylesheet from "~/tailwind.css?url";
-import { authenticator } from "./.server/services/auth";
 import { Navbar } from "~/components/navbar";
+import { getUserSession } from "./.server/services/session";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },
 ];
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  const user = await authenticator.isAuthenticated(request);
+  const user = await getUserSession(request);
 
   return {
-    isLoggedIn: user !== null,
-    canSeeDashboard: user !== null && user.permission === "admin",
+    isLoggedIn: !!user,
+    canSeeDashboard: !!user && user.permission === "admin",
   };
 }
 
 export function Layout({ children }: { children: React.ReactNode }) {
-  const { isLoggedIn, canSeeDashboard } = useLoaderData<typeof loader>();
+  const data = useRouteLoaderData<typeof loader>("root");
   return (
     <html lang="en" className="dark">
       <head>
@@ -35,7 +35,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body className="flex flex-col items-center gap-10">
-        <Navbar isLoggedIn={isLoggedIn} canSeeDashboard={canSeeDashboard} />
+        {data && (
+          <Navbar
+            isLoggedIn={data.isLoggedIn}
+            canSeeDashboard={data?.canSeeDashboard}
+          />
+        )}
         {children}
         <ScrollRestoration />
         <Scripts />

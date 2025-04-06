@@ -1,4 +1,5 @@
-import type {
+import {
+  redirect,
   ActionFunctionArgs,
   LoaderFunctionArgs,
   MetaFunction,
@@ -12,22 +13,23 @@ import {
   useRouteError,
 } from "@remix-run/react";
 import { getSongsToVote, voteForSong } from "~/.server/db/songs";
-import { authenticator } from "~/.server/services/auth";
+import { getUserSession } from "~/.server/services/session";
 import Alert from "~/components/alert";
 import { Button } from "~/components/ui/button";
 import { YouTubePlayer } from "~/components/youtubePlayer";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "New Remix App" },
-    { name: "description", content: "Welcome to Remix!" },
+    { title: "Songer" },
+    { name: "description", content: "Let's choose a song" },
   ];
 };
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  const user = await authenticator.isAuthenticated(request, {
-    failureRedirect: "/login",
-  });
+  const user = await getUserSession(request);
+  if (!user) {
+    throw redirect("/login");
+  }
 
   const songs = await getSongsToVote(user.id);
 
@@ -41,9 +43,10 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 export async function action({ request }: ActionFunctionArgs) {
-  const user = await authenticator.isAuthenticated(request, {
-    failureRedirect: "/login",
-  });
+  const user = await getUserSession(request);
+  if (!user) {
+    throw redirect("/login");
+  }
   const formData = await request.formData();
   const voteValue = Number(formData.get("vote_value"));
   const songId = Number(formData.get("song_id"));

@@ -1,13 +1,12 @@
-import { Authenticator, AuthorizationError } from "remix-auth";
+import { Authenticator } from "remix-auth";
 import { FormStrategy } from "remix-auth-form";
-import { sessionStorage } from "./session";
 import { type SelectUser } from "~/.server/db/schema";
 import { getUser } from "~/.server/db/user";
 import bcrypt from "bcryptjs";
 
 export type User = Omit<SelectUser, "hash">;
 
-export const authenticator = new Authenticator<User>(sessionStorage);
+export const authenticator = new Authenticator<User>();
 
 authenticator.use(
   new FormStrategy(async ({ form }) => {
@@ -18,15 +17,22 @@ authenticator.use(
 
     if (!userFromDb) {
       console.log("[Auth] User not found");
-      throw new AuthorizationError("User not found");
+      throw new Error("User not found");
     }
 
     const passwordMatch = await bcrypt.compare(password, userFromDb.hash);
 
     if (!passwordMatch) {
       console.log("[Auth] Invalid password");
-      throw new AuthorizationError("Invalid password");
+      throw new Error("Invalid password");
     }
+
+    console.log({
+      username: userFromDb.username,
+      id: userFromDb.id,
+      name: userFromDb.name,
+      permission: userFromDb.permission,
+    });
 
     return {
       username: userFromDb.username,

@@ -1,12 +1,14 @@
 import { redirect, type LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { getSongResults } from "~/.server/db/songs";
-import { authenticator } from "~/.server/services/auth";
+import { getUserSession } from "~/.server/services/session";
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  const user = await authenticator.isAuthenticated(request, {
-    failureRedirect: "/login",
-  });
+  const user = await getUserSession(request);
+
+  if (!user) {
+    throw redirect("/login");
+  }
 
   if (user.permission !== "admin") {
     throw redirect("/");
