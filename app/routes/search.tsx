@@ -32,6 +32,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const userInfo = {
     remainingSongs: await getRemainingSongs(user.id),
   };
+
   const searchParam = new URL(request.url).searchParams.get("search");
 
   if (searchParam) {
@@ -41,7 +42,6 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
       return { error: "Invalid URL" };
     }
 
-    await new Promise((res) => setTimeout(() => res(true), 1000));
     const youtubeVideo = await getYoutubeTitle(youtubeId);
     const songsExists = await doSongExist(youtubeId);
 
@@ -111,9 +111,9 @@ export default function Search() {
       <div className="flex flex-col gap-4 flex-grow justify-end w-full">
         {!isError && (
           <p>
-            You have maximum{" "}
+            You have{" "}
             <span className="bold">{data.userInfo.remainingSongs}</span> songs
-            to add
+            left to add
           </p>
         )}
         <Form className="flex gap-2" method="GET">
