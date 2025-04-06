@@ -20,6 +20,8 @@ declare global {
   }
 }
 
+console.log("[ENV] Loading environment variables");
+
 try {
   envSchema.parse(process.env);
 } catch (err) {
