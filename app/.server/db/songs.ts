@@ -1,4 +1,4 @@
-import { TransactionRollbackError, and, eq, isNull } from "drizzle-orm";
+import { TransactionRollbackError, and, count, eq, isNull } from "drizzle-orm";
 import { db } from "./db";
 import {
   SelectUser,
@@ -54,8 +54,10 @@ export async function addSong({
       .insert(songs)
       .values({ youtubeId, comment: sanitizedComment, title, userId })
       .returning();
+
     // Automatically add a like to the song
     await db.insert(likes).values({ songId: result.id, userId, value: 2 });
+
     console.log("[DB] Song added", result);
     return { data: result };
   } catch (error) {
@@ -124,12 +126,64 @@ export async function voteForSong({
   }
 }
 
+type SongResult = {
+  id: number;
+  title: string;
+  votes: {
+    "-2": number;
+    "-1": number;
+    "0": number;
+    "1": number;
+    "2": number;
+  };
+};
+
 export async function getSongResults() {
-  const allLikes = await db
-    .select()
+  const results = await db
+    .select({
+      id: songs.id,
+      title: songs.title,
+      voteValue: likes.value,
+      voteCount: count(likes.value),
+    })
     .from(songs)
-    .fullJoin(likes, eq(songs.id, likes.songId));
-  return allLikes;
+    .leftJoin(likes, eq(likes.songId, songs.id))
+    .groupBy(songs.id, likes.value);
+
+  const output = new Map<number, SongResult>();
+
+  for (const row of results) {
+    const { id, title, voteValue, voteCount } = row;
+
+    if (!output.has(id)) {
+      output.set(id, {
+        id,
+        title,
+        votes: {
+          "-2": 0,
+          "-1": 0,
+          "0": 0,
+          "1": 0,
+          "2": 0,
+        },
+      });
+    }
+
+    if (!voteValue) {
+      continue;
+    }
+
+    const songResult = output.get(id)!;
+    const voteKey = String(voteValue);
+    songResult.votes[voteKey as keyof SongResult["votes"]] = voteCount;
+
+    output.set(id, songResult);
+  }
+
+  return Array.from(output.values()).map((song) => ({
+    ...song,
+    totalVotes: Object.values(song.votes).reduce((a, b) => a + b, 0),
+  }));
 }
 
 export async function removeAllSongs() {
