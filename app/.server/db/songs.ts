@@ -54,6 +54,8 @@ export async function addSong({
       .insert(songs)
       .values({ youtubeId, comment: sanitizedComment, title, userId })
       .returning();
+    // Automatically add a like to the song
+    await db.insert(likes).values({ songId: result.id, userId, value: 2 });
     console.log("[DB] Song added", result);
     return { data: result };
   } catch (error) {
