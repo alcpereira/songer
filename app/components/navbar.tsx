@@ -27,6 +27,20 @@ export function Navbar({
         <ul className="flex items-center gap-10">
           {isLoggedIn && (
             <>
+              <li>
+                <NavLink
+                  className={({ isActive }) =>
+                    cn(
+                      "text-m font-bold cursor-pointer",
+                      isActive && "underline decoration-slate-500"
+                    )
+                  }
+                  to="/reset"
+                  prefetch="intent"
+                >
+                  Reset
+                </NavLink>
+              </li>
               {canSeeDashboard && (
                 <li>
                   <NavLink

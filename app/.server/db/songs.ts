@@ -129,3 +129,13 @@ export async function getSongResults() {
     .fullJoin(likes, eq(songs.id, likes.songId));
   return allLikes;
 }
+
+export async function removeAllSongs() {
+  try {
+    await db.delete(songs);
+    return { success: true, message: "All songs removed" };
+  } catch (error) {
+    console.log("[DB] Error at `removeAllSongs`:", error);
+    return { success: false, message: "Something went wrong" };
+  }
+}
