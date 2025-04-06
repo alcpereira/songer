@@ -27,13 +27,6 @@ authenticator.use(
       throw new Error("Invalid password");
     }
 
-    console.log({
-      username: userFromDb.username,
-      id: userFromDb.id,
-      name: userFromDb.name,
-      permission: userFromDb.permission,
-    });
-
     return {
       username: userFromDb.username,
       id: userFromDb.id,
