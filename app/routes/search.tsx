@@ -109,6 +109,13 @@ export default function Search() {
   return (
     <main className="max-w-[1000px] w-full flex flex-grow flex-col items-start justify-between p-24 gap-8">
       <div className="flex flex-col gap-4 flex-grow justify-end w-full">
+        {!isError && (
+          <p>
+            You have maximum{" "}
+            <span className="bold">{data.userInfo.remainingSongs}</span> songs
+            to add
+          </p>
+        )}
         <Form className="flex gap-2" method="GET">
           <Input
             className="flex-grow"
