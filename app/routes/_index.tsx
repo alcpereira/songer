@@ -124,7 +124,6 @@ export default function Index() {
   return (
     <div className="w-full max-w-[1000px] flex items-center justify-center flex-col gap-10">
       {renderActionMessage()}
-      {actionData && <p>{JSON.stringify(actionData)}</p>}
       <p>Remaining songs to vote: {remainingSongsToVote}</p>
       <YouTubePlayer id={choosenSong.youtubeId} />
       {choosenSong.songComment && (
