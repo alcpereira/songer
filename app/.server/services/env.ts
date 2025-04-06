@@ -5,6 +5,7 @@ const envSchema = z.object({
   YOUTUBE_API: z.string().min(1),
   TURSO_DATABASE_URL: z.string().min(1),
   TURSO_AUTH_TOKEN: z.string().min(1),
+  MAX_SONGS: z.string().min(1),
   NODE_ENV: z
     .union([
       z.literal("development"),

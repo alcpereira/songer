@@ -11,7 +11,7 @@ import {
 import xss from "xss";
 
 export async function getRemainingSongs(userId: SelectUser["id"]) {
-  const MAX_SONGS = 3;
+  const MAX_SONGS = Number(process.env.MAX_SONGS);
 
   const rows = await db
     .select({ songId: songs.id })
